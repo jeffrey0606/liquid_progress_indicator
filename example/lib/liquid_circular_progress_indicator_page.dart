@@ -42,6 +42,7 @@ class LiquidCircularProgressIndicatorPage extends StatelessWidget {
                   valueColor: AlwaysStoppedAnimation(Colors.grey),
                   borderColor: Colors.blue,
                   borderWidth: 5.0,
+                  clipContent: true,
                   center: Text(
                     "Loading...",
                     style: TextStyle(

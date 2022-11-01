@@ -20,6 +20,8 @@ class LiquidCircularProgressIndicator extends ProgressIndicator {
   ///The direction the liquid travels.
   final Axis direction;
 
+  final bool clipContent;
+
   LiquidCircularProgressIndicator({
     Key? key,
     double value = 0.5,
@@ -29,6 +31,7 @@ class LiquidCircularProgressIndicator extends ProgressIndicator {
     this.borderColor,
     this.center,
     this.direction = Axis.vertical,
+    this.clipContent = false,
   }) : super(
           key: key,
           value: value,
@@ -45,7 +48,7 @@ class LiquidCircularProgressIndicator extends ProgressIndicator {
       backgroundColor ?? Theme.of(context).backgroundColor;
 
   Color _getValueColor(BuildContext context) =>
-      valueColor?.value ?? Theme.of(context).accentColor;
+      valueColor?.value ?? Theme.of(context).colorScheme.secondary;
 
   @override
   State<StatefulWidget> createState() =>
@@ -72,8 +75,10 @@ class _LiquidCircularProgressIndicatorState
               value: widget.value,
               color: widget._getValueColor(context),
               direction: widget.direction,
+              child: widget.clipContent ? Center(child: widget.center) : null,
             ),
-            if (widget.center != null) Center(child: widget.center),
+            if (!widget.clipContent)
+              if (widget.center != null) Center(child: widget.center),
           ],
         ),
       ),
@@ -113,8 +118,8 @@ class _CircleBorderPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = width!;
     final newSize = Size(size.width - width!, size.height - width!);
-    canvas.drawArc(
-        Offset(width! / 2, width! / 2) & newSize, 0, _sweep, false, borderPaint);
+    canvas.drawArc(Offset(width! / 2, width! / 2) & newSize, 0, _sweep, false,
+        borderPaint);
   }
 
   @override
